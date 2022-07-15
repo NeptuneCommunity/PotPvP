@@ -1,0 +1,27 @@
+MONGO:
+  URI-MODE: false
+  NORMAL:
+    HOST: 127.0.0.1
+    PORT: 27017
+    DATABASE: PotPvP
+    AUTHENTICATION:
+      ENABLED: false
+      USERNAME: ''
+      PASSWORD: ''
+  URI:
+    DATABASE: PotPvP
+    CONNECTION_STRING: mongodb://127.0.0.1:27017/PotPvP
+
+CONFIG:
+  Proxy: false
+  Normal:
+    serverName:
+    serverIP:
+    serverMainColor:
+    serverSecondColor:
+  Proxied:
+    serverName:
+    serverIP:
+    serverProxy:
+    serverMainColor:
+    serverSecondColor:
