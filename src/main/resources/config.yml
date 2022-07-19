@@ -25,3 +25,7 @@ CONFIG:
     serverProxy:
     serverMainColor:
     serverSecondColor:
+
+NametagPacketRestriction:
+  Enabled: false
+  BypassPrefix: '&a'

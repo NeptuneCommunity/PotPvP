@@ -9,7 +9,7 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.libs.com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 

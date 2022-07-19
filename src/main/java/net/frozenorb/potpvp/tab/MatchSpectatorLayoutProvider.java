@@ -3,7 +3,7 @@ package net.frozenorb.potpvp.tab;
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.match.Match;
 import net.frozenorb.potpvp.match.MatchTeam;
-import net.frozenorb.potpvp.tab.tab.TabLayout;
+import net.frozenorb.potpvp.tab.engine.TabLayout;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

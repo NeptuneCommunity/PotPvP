@@ -12,7 +12,7 @@ import net.frozenorb.potpvp.arena.event.ArenaReleasedEvent;
 import net.frozenorb.potpvp.arena.listener.ArenaItemResetListener;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;

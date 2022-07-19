@@ -2,3 +2,5 @@ name: PotPvP
 version: 2.0-DEV.SNAPSHOT
 author: Neptune Development Team
 main: net.frozenorb.potpvp.PotPvPSI
+depend:
+  - ProtocolLib

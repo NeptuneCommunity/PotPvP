@@ -2,6 +2,7 @@ package net.frozenorb.potpvp.match;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.*;
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 import net.frozenorb.potpvp.PotPvPSI;
@@ -19,7 +20,6 @@ import org.bson.Document;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonObject;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;

@@ -1,7 +1,7 @@
 package net.frozenorb.potpvp.tab;
 
 import net.frozenorb.potpvp.PotPvPSI;
-import net.frozenorb.potpvp.tab.tab.TabLayout;
+import net.frozenorb.potpvp.tab.engine.TabLayout;
 import net.frozenorb.potpvp.util.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

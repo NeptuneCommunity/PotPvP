@@ -39,7 +39,7 @@ final class MultiplexingScoreGetter implements ScoreGetter {
         }
 
         scores.add("&a&7&m");
-        scores.add(ChatColor.GRAY + PotPvPSI.getInstance().getConfig().getString("MONGO.URI.CONNECTION_STRING"));
+        scores.add(ChatColor.GRAY + "star.neptune");
         if (player.hasMetadata("ModMode")) {
             scores.add(ChatColor.GRAY + "In Silent Mode");
         }

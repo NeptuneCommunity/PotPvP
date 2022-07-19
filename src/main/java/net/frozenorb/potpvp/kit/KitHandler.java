@@ -11,7 +11,7 @@ import net.frozenorb.potpvp.kittype.KitType;
 import net.frozenorb.potpvp.util.MongoUtils;
 import org.bson.Document;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Type;

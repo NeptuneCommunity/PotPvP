@@ -1,8 +1,8 @@
 package net.frozenorb.potpvp.kittype;
 
-import org.bukkit.craftbukkit.libs.com.google.gson.TypeAdapter;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonReader;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 

@@ -1,6 +1,11 @@
 package net.frozenorb.potpvp;
 
 import com.comphenix.protocol.ProtocolLibrary;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -18,6 +23,7 @@ import net.frozenorb.potpvp.listener.*;
 import net.frozenorb.potpvp.lobby.LobbyHandler;
 import net.frozenorb.potpvp.match.Match;
 import net.frozenorb.potpvp.match.MatchHandler;
+import net.frozenorb.potpvp.nametag.PotPvPNametagProvider;
 import net.frozenorb.potpvp.nametag.framework.NametagHandler;
 import net.frozenorb.potpvp.party.PartyHandler;
 import net.frozenorb.potpvp.postmatchinv.PostMatchInvHandler;
@@ -28,8 +34,9 @@ import net.frozenorb.potpvp.scoreboard.assemble.AssembleStyle;
 import net.frozenorb.potpvp.scoreboard.assemble.ScoreboardHandler;
 import net.frozenorb.potpvp.setting.SettingHandler;
 import net.frozenorb.potpvp.statistics.StatisticsHandler;
-import net.frozenorb.potpvp.tab.tab.TabAdapter;
-import net.frozenorb.potpvp.tab.tab.TabHandler;
+import net.frozenorb.potpvp.tab.PotPvPLayoutProvider;
+import net.frozenorb.potpvp.tab.engine.TabAdapter;
+import net.frozenorb.potpvp.tab.engine.TabHandler;
 import net.frozenorb.potpvp.tournament.TournamentHandler;
 import net.frozenorb.potpvp.util.ItemUtil;
 import net.frozenorb.potpvp.util.command.CommandHandler;
@@ -43,11 +50,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
-import org.bukkit.craftbukkit.libs.com.google.gson.TypeAdapter;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonReader;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -139,21 +141,23 @@ public final class PotPvPSI extends JavaPlugin {
         CommandHandler.init();
         CommandHandler.registerAll(this);
 
-        TabHandler.init();
+        TabHandler.init(this);
+        TabHandler.setLayoutProvider(new PotPvPLayoutProvider());
 
         PotPvPScoreboardConfiguration scoreboardAdapter = new PotPvPScoreboardConfiguration();
         scoreboardHandler = new ScoreboardHandler(this, scoreboardAdapter);
         scoreboardHandler.setAssembleStyle(AssembleStyle.MODERN);
-        scoreboardHandler.setTicks(10L);
+        scoreboardHandler.setTicks(5L);
 
         NametagHandler.init();
+        NametagHandler.registerProvider(new PotPvPNametagProvider());
 
         ItemUtil.load();
 
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new PingAdapter());
             new LagCheck().runTaskTimerAsynchronously(PotPvPSI.this, 100L, 100L);
-            ProtocolLibrary.getProtocolManager().addPacketListener(new TabAdapter());
+            ProtocolLibrary.getProtocolManager().addPacketListener(new TabAdapter(this));
             ProtocolLibrary.getProtocolManager().addPacketListener(new InventoryAdapter());
         }
 

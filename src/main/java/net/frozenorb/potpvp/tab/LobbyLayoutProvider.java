@@ -5,7 +5,7 @@ import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.elo.EloHandler;
 import net.frozenorb.potpvp.kittype.KitType;
 import net.frozenorb.potpvp.party.Party;
-import net.frozenorb.potpvp.tab.tab.TabLayout;
+import net.frozenorb.potpvp.tab.engine.TabLayout;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
