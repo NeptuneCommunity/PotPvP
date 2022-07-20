@@ -1,5 +1,6 @@
 package net.frozenorb.potpvp.kittype;
 
+import com.google.gson.annotations.SerializedName;
 import com.mongodb.client.MongoCollection;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,6 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import com.google.gson.annotations.SerializedName;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 

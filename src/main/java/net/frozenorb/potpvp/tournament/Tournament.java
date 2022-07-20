@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class Tournament {
@@ -210,8 +211,8 @@ public class Tournament {
         // disconnects every round, the bottom party could get to the final round without
         // winning a single duel. Could shuffle? But would remove the predictability & pseudo-bracket system
         while (1 < oldPartyList.size()) {
-            Party firstParty = oldPartyList.remove(0);
-            Party secondParty = oldPartyList.remove(0);
+            Party firstParty = oldPartyList.remove(ThreadLocalRandom.current().nextInt(oldPartyList.size()));
+            Party secondParty = oldPartyList.remove(ThreadLocalRandom.current().nextInt(oldPartyList.size()));
 
             matches.add(PotPvPSI.getInstance().getMatchHandler().startMatch(ImmutableList.of(new MatchTeam(firstParty.getMembers()), new MatchTeam(secondParty.getMembers())), type, false, false));
         }

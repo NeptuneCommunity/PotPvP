@@ -5,7 +5,6 @@ import net.frozenorb.potpvp.tab.engine.misc.TabUtils;
 import net.frozenorb.potpvp.tab.engine.misc.TeamPacket;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
-import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

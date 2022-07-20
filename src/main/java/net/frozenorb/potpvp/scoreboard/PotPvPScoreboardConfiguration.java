@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PotPvPScoreboardConfiguration extends ScoreboardConfiguration {
 
     public PotPvPScoreboardConfiguration() {
-//        List<String> titles = new ArrayList<>(Arrays.asList("&cP", "&PR", "PRA", "PRAC", "PRACT", "PRACTI", "PRACTIC", "PRACTICE"));
         List<String> titles = new ArrayList<>(Arrays.asList("&fPRACTICE", "&cP&fRACTICE", "&cPR&fACTICE", "&cPRA&fCTICE", "&cPRAC&fTICE", "&cPRACT&fICE", "&cPRACTI&fCE", "&cPRACTIC&fE", "&cPRACTICE", "&fPRACTICE", "&cPRACTICE"));
 
         AtomicInteger atomicInteger = new AtomicInteger();

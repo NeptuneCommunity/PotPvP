@@ -243,5 +243,4 @@ public final class PotPvPSI extends JavaPlugin {
 
         }
     }
-
 }

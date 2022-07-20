@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Files;
+import com.google.gson.reflect.TypeToken;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import lombok.Getter;
 import net.frozenorb.potpvp.PotPvPSI;
@@ -12,7 +13,6 @@ import net.frozenorb.potpvp.arena.event.ArenaReleasedEvent;
 import net.frozenorb.potpvp.arena.listener.ArenaItemResetListener;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import com.google.gson.reflect.TypeToken;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;

@@ -10,17 +10,14 @@ import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.util.AngleUtils;
 import net.frozenorb.potpvp.util.Callback;
 import net.frozenorb.potpvp.util.Cuboid;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_7_R4.util.LongHash;
+import org.bukkit.material.Wool;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -73,8 +70,6 @@ public final class Arena {
      */
     private Location spectatorSpawn;
 
-    private List<Location> eventSpawns;
-
     /**
      * If this arena is currently being used
      *
@@ -89,8 +84,7 @@ public final class Arena {
 
     private final transient Map<Long, ChunkSnapshot> chunkSnapshots = Maps.newHashMap();
 
-    public Arena() {
-    } // for gson
+    public Arena() {} // for gson
 
     public Arena(String schematic, int copy, Cuboid bounds) {
         this.schematic = Preconditions.checkNotNull(schematic);
@@ -152,6 +146,27 @@ public final class Arena {
 
                     break;
                 case PLAYER:
+                    if (below.getState().getData() instanceof Wool) {
+                        BlockState blockState = block.getState();
+                        Wool wool = (Wool) blockState.getData();
+
+                        if (wool.getColor() == DyeColor.BLUE) {
+                            if (team1Spawn == null) {
+                                team1Spawn = skullLocation;
+                            }
+                        }
+
+                        if (wool.getColor() == DyeColor.RED) {
+                            if (team2Spawn == null) {
+                                team2Spawn = skullLocation;
+                            }
+                        }
+
+                        block.setType(Material.AIR);
+                        below.setType(Material.AIR);
+                        return;
+                    }
+
                     if (team1Spawn == null) {
                         team1Spawn = skullLocation;
                     } else {
@@ -165,20 +180,6 @@ public final class Arena {
                     }
 
                     break;
-                case CREEPER:
-                    block.setType(Material.AIR);
-
-                    if (below.getType() == Material.FENCE) {
-                        below.setType(Material.AIR);
-                    }
-
-                    if (eventSpawns == null) {
-                        eventSpawns = new ArrayList<>();
-                    }
-
-                    if (!(eventSpawns.contains(skullLocation))) {
-                        eventSpawns.add(skullLocation);
-                    }
                 default:
                     break;
             }
@@ -253,11 +254,6 @@ public final class Arena {
     public Location getTeam2Spawn() {
         return team2Spawn;
     }
-
-    public List<Location> getEventSpawns() {
-        return eventSpawns;
-    }
-
     public Cuboid getBounds() {
         return bounds;
     }
