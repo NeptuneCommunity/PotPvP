@@ -45,8 +45,8 @@ public final class ArenaHandler {
 
         File worldFolder = getArenaWorld().getWorldFolder();
 
-        File arenaInstancesFile = new File(worldFolder, ARENA_INSTANCES_FILE_NAME);
-        File schematicsFile = new File(worldFolder, SCHEMATICS_FILE_NAME);
+        File arenaInstancesFile = new File(PotPvPSI.getInstance().getDataFolder().getAbsolutePath(), ARENA_INSTANCES_FILE_NAME);
+        File schematicsFile = new File(PotPvPSI.getInstance().getDataFolder().getAbsolutePath(), SCHEMATICS_FILE_NAME);
 
         try {
             // parsed as a List<Arena> and then inserted into Map<String, Map<Integer. Arena>>
@@ -87,7 +87,7 @@ public final class ArenaHandler {
     public void saveSchematics() throws IOException {
         Files.write(
                 PotPvPSI.getGson().toJson(schematics.values()),
-                new File(getArenaWorld().getWorldFolder(), SCHEMATICS_FILE_NAME),
+                new File(PotPvPSI.getInstance().getDataFolder().getAbsolutePath(), SCHEMATICS_FILE_NAME),
                 Charsets.UTF_8
         );
     }
@@ -95,13 +95,11 @@ public final class ArenaHandler {
     public void saveArenas() throws IOException {
         List<Arena> allArenas = new ArrayList<>();
 
-        arenaInstances.forEach((schematic, copies) -> {
-            allArenas.addAll(copies.values());
-        });
+        arenaInstances.forEach((schematic, copies) -> allArenas.addAll(copies.values()));
 
         Files.write(
                 PotPvPSI.getGson().toJson(allArenas),
-                new File(getArenaWorld().getWorldFolder(), ARENA_INSTANCES_FILE_NAME),
+                new File(PotPvPSI.getInstance().getDataFolder().getAbsolutePath(), ARENA_INSTANCES_FILE_NAME),
                 Charsets.UTF_8
         );
     }

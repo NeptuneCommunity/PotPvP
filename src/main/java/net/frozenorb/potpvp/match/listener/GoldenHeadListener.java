@@ -13,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 public final class GoldenHeadListener implements Listener {
 
     private static final int HEALING_POINTS = 8; // half hearts, so 4 hearts
-    private static final ItemStack GOLDEN_HEAD = ItemBuilder.of(Material.GOLDEN_APPLE)
+    private static final ItemStack GOLDEN_HEAD = new ItemBuilder(Material.GOLDEN_APPLE)
             .name("&6&lGolden Head")
             .build();
 

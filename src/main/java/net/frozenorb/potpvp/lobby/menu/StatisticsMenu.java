@@ -16,7 +16,7 @@ import java.util.Map;
 
 public final class StatisticsMenu extends Menu {
 
-    private static final Button BLACK_PANE = Button.fromItem(ItemBuilder.of(Material.STAINED_GLASS_PANE).data(DyeColor.BLACK.getData()).name(" ").build());
+    private static final Button BLACK_PANE = Button.fromItem(new ItemBuilder(Material.STAINED_GLASS_PANE).durability(DyeColor.BLACK.getData()).name(" ").build());
 
     public StatisticsMenu() {
         setAutoUpdate(true);

@@ -147,23 +147,25 @@ public final class Arena {
                     break;
                 case PLAYER:
                     if (below.getState().getData() instanceof Wool) {
-                        BlockState blockState = block.getState();
+                        BlockState blockState = below.getState();
                         Wool wool = (Wool) blockState.getData();
 
                         if (wool.getColor() == DyeColor.BLUE) {
                             if (team1Spawn == null) {
+                                Bukkit.broadcastMessage("Team 1 detected as BLUE");
                                 team1Spawn = skullLocation;
                             }
                         }
 
                         if (wool.getColor() == DyeColor.RED) {
                             if (team2Spawn == null) {
+                                Bukkit.broadcastMessage("Team 2 detected as RED");
                                 team2Spawn = skullLocation;
                             }
                         }
 
-                        block.setType(Material.AIR);
                         below.setType(Material.AIR);
+                        block.setType(Material.AIR);
                         return;
                     }
 

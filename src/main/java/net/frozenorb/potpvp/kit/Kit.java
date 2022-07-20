@@ -4,10 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.kittype.KitType;
+import net.frozenorb.potpvp.match.Match;
+import net.frozenorb.potpvp.match.MatchHandler;
+import net.frozenorb.potpvp.util.ItemBuilder;
 import net.frozenorb.potpvp.util.ItemUtils;
 import net.frozenorb.potpvp.util.PatchedPlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -54,6 +58,44 @@ public final class Kit {
         player.getInventory().setArmorContents(type.getDefaultArmor());
         player.getInventory().setContents(inventoryContents);
 
+        MatchHandler matchHandler = PotPvPSI.getInstance().getMatchHandler();
+        Match match = matchHandler.getMatchPlaying(player);
+
+        if (type.getId().equalsIgnoreCase("Bridges")) {
+            if (match.getTeams().get(0) == match.getTeam(player.getUniqueId())) {
+                player.getInventory().setArmorContents(new ItemStack[]{
+                        new ItemBuilder(org.bukkit.Material.LEATHER_BOOTS).color(Color.BLUE).build(),
+                        new ItemBuilder(org.bukkit.Material.LEATHER_LEGGINGS).color(Color.BLUE).build(),
+                        new ItemBuilder(org.bukkit.Material.LEATHER_CHESTPLATE).color(Color.BLUE).build(),
+                        new ItemBuilder(Material.LEATHER_HELMET).color(Color.BLUE).build()
+                });
+                player.getInventory().all(Material.STAINED_CLAY).forEach((key, value) -> {
+                    player.getInventory().setItem(key, new ItemBuilder(Material.STAINED_CLAY).durability(11).amount(64).build());
+                    player.getInventory().setItem(key, new ItemBuilder(Material.STAINED_CLAY).durability(11).amount(64).build());
+                });
+            } else {
+                player.getInventory().setArmorContents(new ItemStack[]{
+                        new ItemBuilder(org.bukkit.Material.LEATHER_BOOTS).color(Color.RED).build(),
+                        new ItemBuilder(org.bukkit.Material.LEATHER_LEGGINGS).color(Color.RED).build(),
+                        new ItemBuilder(org.bukkit.Material.LEATHER_CHESTPLATE).color(Color.RED).build(),
+                        new ItemBuilder(Material.LEATHER_HELMET).color(Color.RED).build()
+                });
+                player.getInventory().all(Material.STAINED_CLAY).forEach((key, value) -> {
+                    player.getInventory().setItem(key, new ItemBuilder(Material.STAINED_CLAY).durability(14).amount(64).build());
+                    player.getInventory().setItem(key, new ItemBuilder(Material.STAINED_CLAY).durability(14).amount(64).build());
+                });
+            }
+
+            for (ItemStack itemStack : player.getInventory().getContents()) {
+                if (itemStack != null) {
+                    ItemMeta itemMeta = itemStack.getItemMeta();
+
+                    itemMeta.spigot().setUnbreakable(true);
+                    itemStack.setItemMeta(itemMeta);
+                }
+            }
+        }
+
         Bukkit.getScheduler().runTaskLater(PotPvPSI.getInstance(), player::updateInventory, 1L);
     }
 
@@ -94,5 +136,4 @@ public final class Kit {
         item.setItemMeta(itemMeta);
         return item;
     }
-
 }
