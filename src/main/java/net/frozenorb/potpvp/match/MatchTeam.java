@@ -2,6 +2,7 @@ package net.frozenorb.potpvp.match;
 
 import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -17,6 +18,10 @@ import java.util.function.Consumer;
  * Represents one team participating in a {@link Match}
  */
 public final class MatchTeam {
+
+    @Getter
+    @Setter
+    private int roundsWon;
 
     /**
      * All players who were ever part of this team, including those who logged off / died

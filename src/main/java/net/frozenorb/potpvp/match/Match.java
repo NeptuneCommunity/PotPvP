@@ -317,9 +317,19 @@ public final class Match {
         return ImmutableMap.copyOf(postMatchPlayers);
     }
 
-    private void checkEnded() {
+    // private -> public
+    public void checkEnded() {
         if (state == MatchState.ENDING || state == MatchState.TERMINATED) {
             return;
+        }
+
+        if (kitType.getId().equalsIgnoreCase("Bridges")) {
+            for (MatchTeam team : teams) {
+                if (team.getRoundsWon() >= 3) {
+                    this.winner = team;
+                    endMatch(MatchEndReason.ENEMIES_ELIMINATED);
+                }
+            }
         }
 
         List<MatchTeam> teamsAlive = new ArrayList<>();

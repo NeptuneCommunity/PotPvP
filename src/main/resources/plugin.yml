@@ -1,5 +1,5 @@
 name: PotPvP
-version: 2.0-DEV.SNAPSHOT
+version: ${version}
 author: Neptune Development Team
 main: net.frozenorb.potpvp.PotPvPSI
 depend:

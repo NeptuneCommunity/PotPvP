@@ -9,6 +9,7 @@ import net.frozenorb.potpvp.match.MatchTeam;
 import net.frozenorb.potpvp.nametag.PotPvPNametagProvider;
 import net.frozenorb.potpvp.util.Cuboid;
 import net.frozenorb.potpvp.util.PlayerUtils;
+import net.frozenorb.util.BlockUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -108,11 +109,7 @@ public final class MatchGeneralListener implements Listener {
         Location from = event.getFrom();
         Location to = event.getTo();
 
-        if (
-                from.getBlockX() == to.getBlockX() &&
-                        from.getBlockY() == to.getBlockY() &&
-                        from.getBlockZ() == to.getBlockZ()
-        ) {
+        if (from.getBlockX() == to.getBlockX() && from.getBlockY() == to.getBlockY() && from.getBlockZ() == to.getBlockZ()) {
             return;
         }
 
@@ -126,6 +123,14 @@ public final class MatchGeneralListener implements Listener {
         Arena arena = match.getArena();
         Cuboid bounds = arena.getBounds();
 
+        if (match.getState() == MatchState.IN_PROGRESS && !match.isSpectator(player.getUniqueId())) {
+            if (match.getKitType().getId().equals("SUMO") || match.getKitType().getId().equals("SPLEEF")) {
+                if (BlockUtil.isOnLiquid(to, 0)) {
+                    player.damage(player.getHealth() + 20);
+                }
+            }
+        }
+
         // pretend the vertical bounds of the arena are 2 blocks lower than they
         // are to avoid issues with players hitting their heads on the glass (Jon said to do this)
         // looks kind of funny but in a high frequency event this is by far the fastest
@@ -134,29 +139,9 @@ public final class MatchGeneralListener implements Listener {
             if (match.isSpectator(player.getUniqueId())) {
                 player.teleport(arena.getSpectatorSpawn());
             } else if (to.getBlockY() >= bounds.getUpperY() || to.getBlockY() <= bounds.getLowerY()) { // if left vertically
-
-                if ((match.getKitType().getId().equals("SUMO") || match.getKitType().getId().equals("SPLEEF"))) {
-                    if (to.getBlockY() <= bounds.getLowerY() && bounds.getLowerY() - to.getBlockY() <= 20)
-                        return; // let the player fall 10 blocks
-                    match.markDead(player);
-                    match.addSpectator(player, null, true);
-                }
-
                 player.teleport(arena.getSpectatorSpawn());
             } else {
-                if (match.getKitType().getId().equals("SUMO") || match.getKitType().getId().equals("SPLEEF")) { // if they left horizontally
-                    match.markDead(player);
-                    match.addSpectator(player, null, true);
-                    player.teleport(arena.getSpectatorSpawn());
-                }
-
                 event.setCancelled(true);
-            }
-        } else if (to.getBlockY() + 5 < arena.getSpectatorSpawn().getBlockY()) { // if the player is still in the arena bounds but fell down from the spawn point
-            if (match.getKitType().getId().equals("SUMO")) {
-                match.markDead(player);
-                match.addSpectator(player, null, true);
-                player.teleport(arena.getSpectatorSpawn());
             }
         }
     }

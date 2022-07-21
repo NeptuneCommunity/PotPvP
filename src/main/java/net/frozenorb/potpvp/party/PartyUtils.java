@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @UtilityClass
 public final class PartyUtils {
@@ -51,8 +52,8 @@ public final class PartyUtils {
         Player spectator = null; // only can be one
 
         while (members.size() >= 2) {
-            team1.add(members.remove(0));
-            team2.add(members.remove(0));
+            team1.add(members.remove(ThreadLocalRandom.current().nextInt(members.size())));
+            team2.add(members.remove(ThreadLocalRandom.current().nextInt(members.size())));
         }
 
         if (!members.isEmpty()) {
