@@ -1,5 +1,5 @@
 name: PotPvP
-version: ${version}
+version: ${git.commit.id.abbrev}
 author: Neptune Development Team
 main: net.frozenorb.potpvp.PotPvPSI
 depend:
