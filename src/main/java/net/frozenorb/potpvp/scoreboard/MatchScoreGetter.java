@@ -7,8 +7,10 @@ import net.frozenorb.potpvp.match.Match;
 import net.frozenorb.potpvp.match.MatchHandler;
 import net.frozenorb.potpvp.match.MatchState;
 import net.frozenorb.potpvp.match.MatchTeam;
+import net.frozenorb.potpvp.match.listener.MatchBoxingListener;
 import net.frozenorb.potpvp.util.PlayerUtils;
 import net.frozenorb.potpvp.util.TimeUtils;
+import net.minecraft.util.org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -85,14 +87,7 @@ final class MatchScoreGetter implements BiConsumer<Player, List<String>> {
         // this method shouldn't have even been called if
         // they're not in a match
         if (match == null) {
-            if (followingOpt.isPresent()) {
-                scores.add("&5Following: *&7" + PotPvPSI.getInstance().uuidCache.name(followingOpt.get()));
-            }
-
-//            if (AutoRebootHandler.isRebooting()) {
-//                String secondsStr = TimeUtils.formatIntoMMSS(AutoRebootHandler.getRebootSecondsRemaining());
-//                scores.add("&c&lRebooting: &c" + secondsStr);
-//            }
+            followingOpt.ifPresent(uuid -> scores.add("&dFollowing: *&7" + PotPvPSI.getInstance().uuidCache.name(uuid)));
 
             if (player.hasMetadata("ModMode")) {
                 scores.add(ChatColor.GRAY.toString() + ChatColor.BOLD + "In Silent Mode");
@@ -101,10 +96,9 @@ final class MatchScoreGetter implements BiConsumer<Player, List<String>> {
         }
 
         boolean participant = match.getTeam(player.getUniqueId()) != null;
-        boolean renderPing = false;
 
         if (participant) {
-            renderPing = renderParticipantLines(scores, match, player);
+            renderParticipantLines(scores, match, player);
         } else {
             MatchTeam previousTeam = match.getPreviousTeam(player.getUniqueId());
             renderSpectatorLines(scores, match, previousTeam);
@@ -112,34 +106,33 @@ final class MatchScoreGetter implements BiConsumer<Player, List<String>> {
 
         renderMetaLines(scores, match, participant);
 
-        if (renderPing) {
-            renderPingLines(scores, match, player);
+        if (match.getKitType().getId().equalsIgnoreCase("Boxing")) {
+            renderBoxingLines(scores, match, player);
         }
+
+        if (match.getKitType().getId().equalsIgnoreCase("Bridges")) {
+            renderBridgesLines(scores, match, player);
+        }
+
+        renderPingLines(scores, match, player);
 
         // this definitely can be a .ifPresent, however creating the new lambda that often
         // was causing some performance issues, so we do this less pretty (but more efficent)
         // check (we can't define the lambda up top and reference because we reference the
         // scores variable)
-        if (followingOpt.isPresent()) {
-            scores.add("&5Following: *&7" + PotPvPSI.getInstance().uuidCache.name(followingOpt.get()));
-        }
-
-//        if (AutoRebootHandler.isRebooting()) {
-//            String secondsStr = TimeUtils.formatIntoMMSS(AutoRebootHandler.getRebootSecondsRemaining());
-//            scores.add("&c&lRebooting: &c" + secondsStr);
-//        }
+        followingOpt.ifPresent(uuid -> scores.add("&dFollowing: *&7" + PotPvPSI.getInstance().uuidCache.name(uuid)));
 
         if (player.hasMetadata("ModMode")) {
             scores.add(ChatColor.GRAY.toString() + ChatColor.BOLD + "In Silent Mode");
         }
     }
 
-    private boolean renderParticipantLines(List<String> scores, Match match, Player player) {
+    private void renderParticipantLines(List<String> scores, Match match, Player player) {
         List<MatchTeam> teams = match.getTeams();
 
         // only render scoreboard if we have two teams
         if (teams.size() != 2) {
-            return false;
+            return;
         }
 
         // this method won't be called if the player isn't a participant
@@ -163,7 +156,6 @@ final class MatchScoreGetter implements BiConsumer<Player, List<String>> {
             renderJumboMatchLines(scores, ourTeam, otherTeam);
         }
 
-        return false;
     }
 
     private void render1v1MatchLines(List<String> scores, MatchTeam otherTeam) {
@@ -279,6 +271,8 @@ final class MatchScoreGetter implements BiConsumer<Player, List<String>> {
 
         List<MatchTeam> teams = match.getTeams();
 
+        if (match.getKitType().getId().equalsIgnoreCase("Bridges") || match.getKitType().getId().equalsIgnoreCase("Boxing")) return;
+
         // only render team overview if we have two teams
         if (teams.size() == 2) {
             MatchTeam teamOne = teams.get(0);
@@ -288,7 +282,7 @@ final class MatchScoreGetter implements BiConsumer<Player, List<String>> {
                 // spectators who were on a team see teams as they releate
                 // to them, not just one/two.
                 if (oldTeam == null) {
-                    scores.add("&5Team One: &f" + teamOne.getAliveMembers().size() + "/" + teamOne.getAllMembers().size());
+                    scores.add("&dTeam One: &f" + teamOne.getAliveMembers().size() + "/" + teamOne.getAllMembers().size());
                     scores.add("&bTeam Two: &f" + teamTwo.getAliveMembers().size() + "/" + teamTwo.getAllMembers().size());
                 } else {
                     MatchTeam otherTeam = oldTeam == teamOne ? teamTwo : teamOne;
@@ -324,22 +318,101 @@ final class MatchScoreGetter implements BiConsumer<Player, List<String>> {
     }
 
     private void renderPingLines(List<String> scores, Match match, Player ourPlayer) {
-        if (Boolean.TRUE) return;
         List<MatchTeam> teams = match.getTeams();
         if (teams.size() == 2) {
-            MatchTeam firstTeam = teams.get(0);
-            MatchTeam secondTeam = teams.get(1);
+            MatchTeam teamOne = teams.get(0);
+            MatchTeam teamTwo = teams.get(1);
 
-            Set<UUID> firstTeamPlayers = firstTeam.getAllMembers();
-            Set<UUID> secondTeamPlayers = secondTeam.getAllMembers();
+            Set<UUID> teamOnePlayers = teamOne.getAllMembers();
+            Set<UUID> teamTwoPlayers = teamTwo.getAllMembers();
 
-            if (firstTeamPlayers.size() == 1 && secondTeamPlayers.size() == 1) {
-                scores.add("&7&b&4"); // spaceer
-                scores.add("&5Your Ping: &7" + PlayerUtils.getPing(ourPlayer));
-                Player otherPlayer = Bukkit.getPlayer(match.getTeam(ourPlayer.getUniqueId()) == firstTeam ? secondTeam.getFirstMember() : firstTeam.getFirstMember());
-                if (otherPlayer == null) return;
-                scores.add("&5Their Ping: &7" + PlayerUtils.getPing(otherPlayer));
+            if (teamOnePlayers.size() == 1 && teamTwoPlayers.size() == 1) {
+                if (teamOne.getAliveMembers().contains(ourPlayer.getUniqueId()) || teamTwo.getAliveMembers().contains(ourPlayer.getUniqueId())) {
+                    scores.add("&7&b&4"); // spaceer
+                    scores.add("&aYour Ping: &f" + PlayerUtils.getPing(ourPlayer) + " ms");
+                    Player otherPlayer = Bukkit.getPlayer(match.getTeam(ourPlayer.getUniqueId()) == teamOne ? teamTwo.getFirstMember() : teamOne.getFirstMember());
+                    if (otherPlayer == null) return;
+
+                    scores.add("&cTheir Ping: &f" + PlayerUtils.getPing(otherPlayer) + " ms");
+                } else {
+                    Player teamOneBukkit = Bukkit.getPlayer(teamOne.getFirstMember());
+                    Player teamTwoBukkit = Bukkit.getPlayer(teamTwo.getFirstMember());
+                    scores.add("&7&b&4"); // spaceer
+
+                    if (teamOneBukkit != null) {
+                        scores.add("&d" + teamOneBukkit.getName() + "'s Ping: &f" + PlayerUtils.getPing(teamOneBukkit) + " ms");
+                    }
+                    if (teamTwoBukkit != null) {
+                        scores.add("&b" + teamTwoBukkit.getName() + "'s Ping: &f" + PlayerUtils.getPing(teamTwoBukkit) + " ms");
+                    }
+                }
             }
+        }
+    }
+
+    private void renderBoxingLines(List<String> scores, Match match, Player player) {
+        List<MatchTeam> teams = match.getTeams();
+        MatchTeam teamOne = teams.get(0);
+        MatchTeam teamTwo = teams.get(1);
+
+        UUID ourPlayerUUID = player.getUniqueId();
+        UUID otherPlayerUUID = match.getTeam(ourPlayerUUID) == teamOne ? teamTwo.getFirstMember() : teamOne.getFirstMember();
+
+        int ourHits = match.getTotalHits().getOrDefault(ourPlayerUUID, 0);
+        int ourCombo = match.getCombos().getOrDefault(ourPlayerUUID, 0);
+
+        int themCombo = match.getCombos().getOrDefault(otherPlayerUUID, 0);
+        int themHits = match.getTotalHits().getOrDefault(otherPlayerUUID, 0);
+
+        String difference = (ourHits >= themHits ? "&a(+" + (ourHits - themHits) + ")" : "&c(-" + (themHits - ourHits) + ")");
+        MatchTeam oldTeam = match.getPreviousTeam(ourPlayerUUID);
+
+        if (match.isSpectator(ourPlayerUUID)) {
+            if (oldTeam == null) {
+                scores.add("&b&l&d&o&d");
+                scores.add("&dTeam One: &f" + teamOne.getAliveMembers() + "/" + teamOne.getAllMembers());
+                scores.add("&fHits: &e" + teamOne.getHitMap().getOrDefault(teamOne, 0) + "/" + (teamTwo.getAllMembers().size() * 100));
+                scores.add("&d&e&a&d&l&c");
+                scores.add("&bTeam Two: &f" + teamTwo.getAliveMembers() + "/" + teamTwo.getAllMembers());
+                scores.add("&fHits: &e" + teamTwo.getHitMap().getOrDefault(teamTwo, 0) + "/" + (teamOne.getAllMembers().size() * 100));
+            } else {
+                MatchTeam otherTeam = oldTeam == teamOne ? teamTwo : teamOne;
+
+                scores.add("&b&l&d&o&d");
+                scores.add("&aTeam: &f" + oldTeam.getAliveMembers() + "/" + oldTeam.getAllMembers());
+                scores.add("&fHits: &e" + oldTeam.getHitMap().getOrDefault(oldTeam, 0) + "/" + (otherTeam.getAllMembers().size() * 100));
+                scores.add("&d&e&a&d&l&c");
+                scores.add("&cOpponents: &f" + otherTeam.getAliveMembers() + "/" + otherTeam.getAllMembers());
+                scores.add("&fHits: &e" + otherTeam.getHitMap().getOrDefault(otherTeam, 0) + "/" + (oldTeam.getAllMembers().size() * 100));
+            }
+            return;
+        }
+
+        scores.add("&7&b&4&d&l"); // spaceer
+        scores.add(ChatColor.RED + "Hits: " + difference);
+        scores.add(" &aYou: &f" + ourHits + ((ourCombo >= 2 && match.getLastHit().containsKey(ourPlayerUUID)) ? " &e(" + ourCombo + " Combo" + ")" : ""));
+        scores.add(" &cThem: &f" + themHits + ((themCombo >= 2 && match.getLastHit().containsKey(otherPlayerUUID)) ? " &e(" + themCombo + " Combo" + ")" : ""));
+    }
+
+    private void renderBridgesLines(List<String> scores, Match match, Player player) {
+        List<MatchTeam> teams = match.getTeams();
+
+        MatchTeam firstTeam = teams.get(0);
+        MatchTeam secondTeam = teams.get(1);
+
+        int ourKills = match.getKills().getOrDefault(player.getUniqueId(), 0);
+        int ourGoals = match.getGoals().getOrDefault(player.getUniqueId(), 0);
+
+        if (match.isSpectator(player.getUniqueId())) {
+            scores.add("&7&b&4&d&l"); // spaceer
+            scores.add("&c[R] " + StringUtils.repeat("&c⬤", secondTeam.getRoundsWon()) + StringUtils.repeat("&7⬤", 3 - secondTeam.getRoundsWon()));
+            scores.add("&9[B] " + StringUtils.repeat("&9⬤", firstTeam.getRoundsWon()) + StringUtils.repeat("&7⬤", 3 - firstTeam.getRoundsWon()));
+        } else {
+            scores.add("&c[R] " + StringUtils.repeat("&c⬤", secondTeam.getRoundsWon()) + StringUtils.repeat("&7⬤", 3 - secondTeam.getRoundsWon()));
+            scores.add("&9[B] " + StringUtils.repeat("&9⬤", firstTeam.getRoundsWon()) + StringUtils.repeat("&7⬤", 3 - firstTeam.getRoundsWon()));
+            scores.add("&7&b&4&d&l"); // spaceer
+            scores.add("&aKills: &f" + ourKills);
+            scores.add("&aGoals: &f" + ourGoals);
         }
     }
 

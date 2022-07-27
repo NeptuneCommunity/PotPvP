@@ -2,7 +2,7 @@ package net.frozenorb.potpvp.lobby.listener;
 
 import net.frozenorb.potpvp.lobby.LobbyHandler;
 import net.frozenorb.potpvp.lobby.listener.LobbyParkourListener.Parkour;
-import net.frozenorb.potpvp.util.menu.framework.Menu;
+import net.frozenorb.potpvp.util.menu.engine.Menu;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package net.frozenorb.potpvp.kit.menu.editkit;
 
 import com.google.common.collect.ImmutableList;
-import net.frozenorb.potpvp.util.menu.framework.Button;
+import net.frozenorb.potpvp.util.menu.engine.Button;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;

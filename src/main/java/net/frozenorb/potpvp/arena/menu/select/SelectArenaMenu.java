@@ -10,8 +10,8 @@ import net.frozenorb.potpvp.kittype.menu.select.SendDuelButton;
 import net.frozenorb.potpvp.kittype.menu.select.ToggleAllButton;
 import net.frozenorb.potpvp.match.MatchHandler;
 import net.frozenorb.potpvp.util.Callback;
-import net.frozenorb.potpvp.util.menu.framework.Button;
-import net.frozenorb.potpvp.util.menu.framework.Menu;
+import net.frozenorb.potpvp.util.menu.engine.Button;
+import net.frozenorb.potpvp.util.menu.engine.Menu;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

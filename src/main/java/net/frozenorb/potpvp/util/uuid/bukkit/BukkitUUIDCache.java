@@ -1,11 +1,11 @@
 package net.frozenorb.potpvp.util.uuid.bukkit;
 
 import net.frozenorb.potpvp.PotPvPSI;
-import net.frozenorb.potpvp.util.uuid.IUUIDCache;
+import net.frozenorb.potpvp.util.uuid.UUIDCache;
 
 import java.util.UUID;
 
-public final class BukkitUUIDCache implements IUUIDCache {
+public final class BukkitUUIDCache implements UUIDCache {
 
     public UUID uuid(String name) {
         return (PotPvPSI.getInstance().getServer().getOfflinePlayer(name).getUniqueId());

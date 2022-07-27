@@ -1,7 +1,7 @@
 package net.frozenorb.potpvp.util.uuid.listener;
 
 import net.frozenorb.potpvp.PotPvPSI;
-import net.frozenorb.potpvp.util.uuid.UUIDCache;
+import net.frozenorb.potpvp.util.uuid.UUIDCacheHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,10 +23,10 @@ public final class UUIDListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!event.getPlayer().isOp() || UUIDCache.MONITOR_CACHE.containsKey(event.getPlayer().getUniqueId())) {
+        if (!event.getPlayer().isOp() || UUIDCacheHandler.MONITOR_CACHE.containsKey(event.getPlayer().getUniqueId())) {
             return;
         }
 
-        UUIDCache.MONITOR_CACHE.put(event.getPlayer().getUniqueId(), true);
+        UUIDCacheHandler.MONITOR_CACHE.put(event.getPlayer().getUniqueId(), true);
     }
 }

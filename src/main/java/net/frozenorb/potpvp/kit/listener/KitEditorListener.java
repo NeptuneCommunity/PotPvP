@@ -1,7 +1,7 @@
 package net.frozenorb.potpvp.kit.listener;
 
 import net.frozenorb.potpvp.kit.menu.editkit.EditKitMenu;
-import net.frozenorb.potpvp.util.menu.framework.Menu;
+import net.frozenorb.potpvp.util.menu.engine.Menu;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

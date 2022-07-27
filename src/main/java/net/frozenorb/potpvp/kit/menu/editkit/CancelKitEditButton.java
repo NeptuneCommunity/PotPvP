@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList;
 import net.frozenorb.potpvp.kit.menu.kits.KitsMenu;
 import net.frozenorb.potpvp.kittype.KitType;
 import net.frozenorb.potpvp.util.InventoryUtils;
-import net.frozenorb.potpvp.util.menu.framework.Button;
+import net.frozenorb.potpvp.util.menu.engine.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;

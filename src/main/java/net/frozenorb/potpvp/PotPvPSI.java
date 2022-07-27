@@ -24,14 +24,14 @@ import net.frozenorb.potpvp.lobby.LobbyHandler;
 import net.frozenorb.potpvp.match.Match;
 import net.frozenorb.potpvp.match.MatchHandler;
 import net.frozenorb.potpvp.nametag.PotPvPNametagProvider;
-import net.frozenorb.potpvp.nametag.framework.NametagHandler;
+import net.frozenorb.potpvp.nametag.engine.NametagHandler;
 import net.frozenorb.potpvp.party.PartyHandler;
 import net.frozenorb.potpvp.postmatchinv.PostMatchInvHandler;
 import net.frozenorb.potpvp.queue.QueueHandler;
 import net.frozenorb.potpvp.rematch.RematchHandler;
 import net.frozenorb.potpvp.scoreboard.PotPvPScoreboardConfiguration;
-import net.frozenorb.potpvp.scoreboard.assemble.AssembleStyle;
-import net.frozenorb.potpvp.scoreboard.assemble.ScoreboardHandler;
+import net.frozenorb.potpvp.scoreboard.engine.AssembleStyle;
+import net.frozenorb.potpvp.scoreboard.engine.ScoreboardHandler;
 import net.frozenorb.potpvp.setting.SettingHandler;
 import net.frozenorb.potpvp.statistics.StatisticsHandler;
 import net.frozenorb.potpvp.tab.PotPvPLayoutProvider;
@@ -40,12 +40,12 @@ import net.frozenorb.potpvp.tab.engine.TabHandler;
 import net.frozenorb.potpvp.tournament.TournamentHandler;
 import net.frozenorb.potpvp.util.ItemUtil;
 import net.frozenorb.potpvp.util.command.CommandHandler;
-import net.frozenorb.potpvp.util.menu.framework.ButtonListener;
+import net.frozenorb.potpvp.util.menu.engine.ButtonListener;
 import net.frozenorb.potpvp.util.protocol.InventoryAdapter;
 import net.frozenorb.potpvp.util.protocol.LagCheck;
 import net.frozenorb.potpvp.util.protocol.PingAdapter;
 import net.frozenorb.potpvp.util.serialization.*;
-import net.frozenorb.potpvp.util.uuid.UUIDCache;
+import net.frozenorb.potpvp.util.uuid.UUIDCacheHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -117,7 +117,7 @@ public final class PotPvPSI extends JavaPlugin {
     @Getter
     private TournamentHandler tournamentHandler;
     @Getter
-    public UUIDCache uuidCache;
+    public UUIDCacheHandler uuidCache;
 
     @Getter
     public ScoreboardHandler scoreboardHandler;
@@ -136,7 +136,7 @@ public final class PotPvPSI extends JavaPlugin {
         }
 
         /* Initializing */
-        uuidCache = new UUIDCache();
+        uuidCache = new UUIDCacheHandler();
 
         CommandHandler.init();
         CommandHandler.registerAll(this);
@@ -147,7 +147,7 @@ public final class PotPvPSI extends JavaPlugin {
         PotPvPScoreboardConfiguration scoreboardAdapter = new PotPvPScoreboardConfiguration();
         scoreboardHandler = new ScoreboardHandler(this, scoreboardAdapter);
         scoreboardHandler.setAssembleStyle(AssembleStyle.MODERN);
-        scoreboardHandler.setTicks(5L);
+        scoreboardHandler.setTicks(1L);
 
         NametagHandler.init();
         NametagHandler.registerProvider(new PotPvPNametagProvider());

@@ -31,13 +31,7 @@ public class StatisticsHandler implements Listener {
         COLLECTION = MongoUtils.getCollection("playerStatistics");
         statisticsMap = Maps.newConcurrentMap();
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(PotPvPSI.getInstance(), () -> {
-
-            long start = System.currentTimeMillis();
-            statisticsMap.keySet().forEach(this::saveStatistics);
-            Bukkit.getLogger().info("Saved " + statisticsMap.size() + " statistics in " + (System.currentTimeMillis() - start) + "ms.");
-
-        }, 30 * 20, 30 * 20);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(PotPvPSI.getInstance(), () -> statisticsMap.keySet().forEach(this::saveStatistics), 300 * 20L, 300 * 20L);
     }
 
 
@@ -209,6 +203,4 @@ public class StatisticsHandler implements Listener {
     private enum Statistic {
         WINS, LOSSES, WLR, KILLS, DEATHS, KDR
     }
-
-
 }

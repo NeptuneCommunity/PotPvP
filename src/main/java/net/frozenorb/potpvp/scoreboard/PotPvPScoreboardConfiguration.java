@@ -1,8 +1,8 @@
 package net.frozenorb.potpvp.scoreboard;
 
 import net.frozenorb.potpvp.PotPvPSI;
-import net.frozenorb.potpvp.scoreboard.assemble.config.ScoreboardConfiguration;
-import net.frozenorb.potpvp.scoreboard.assemble.construct.TitleGetter;
+import net.frozenorb.potpvp.scoreboard.engine.config.ScoreboardConfiguration;
+import net.frozenorb.potpvp.scoreboard.engine.construct.TitleGetter;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class PotPvPScoreboardConfiguration extends ScoreboardConfiguration {
 
                 setTitleGetter(new TitleGetter(titles.get(atomicInteger.getAndIncrement())));
             }
-        }.runTaskTimerAsynchronously(PotPvPSI.getInstance(), 0L, 10L);
+        }.runTaskTimerAsynchronously(PotPvPSI.getInstance(), 0L, 20L);
 
         setScoreGetter(new MultiplexingScoreGetter(new MatchScoreGetter(), new LobbyScoreGetter()));
     }

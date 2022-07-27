@@ -7,10 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -22,6 +19,10 @@ public final class MatchTeam {
     @Getter
     @Setter
     private int roundsWon;
+
+    @Getter
+    @Setter
+    private Map<MatchTeam, Integer> hitMap;
 
     /**
      * All players who were ever part of this team, including those who logged off / died

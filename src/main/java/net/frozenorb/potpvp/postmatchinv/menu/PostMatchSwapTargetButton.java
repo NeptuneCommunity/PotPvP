@@ -3,7 +3,7 @@ package net.frozenorb.potpvp.postmatchinv.menu;
 import com.google.common.base.Preconditions;
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.postmatchinv.PostMatchPlayer;
-import net.frozenorb.potpvp.util.menu.framework.Button;
+import net.frozenorb.potpvp.util.menu.engine.Button;
 import net.minecraft.util.com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

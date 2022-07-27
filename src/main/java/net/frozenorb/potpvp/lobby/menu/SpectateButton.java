@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.match.Match;
 import net.frozenorb.potpvp.match.MatchTeam;
-import net.frozenorb.potpvp.util.menu.framework.Button;
+import net.frozenorb.potpvp.util.menu.engine.Button;
 import net.frozenorb.potpvp.validation.PotPvPValidation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

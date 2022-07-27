@@ -2,6 +2,7 @@ package net.frozenorb.potpvp.match.listener;
 
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.arena.Arena;
+import net.frozenorb.potpvp.kit.Kit;
 import net.frozenorb.potpvp.match.Match;
 import net.frozenorb.potpvp.match.MatchHandler;
 import net.frozenorb.potpvp.match.MatchTeam;
@@ -13,13 +14,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public class MatchBridgesListener implements Listener {
 
@@ -52,12 +60,17 @@ public class MatchBridgesListener implements Listener {
 
         if (!match.getKitType().getId().equalsIgnoreCase("Bridges")) return;
 
+        if (event.getEntity().getKiller() != null) {
+            match.getKills().put(player.getKiller().getUniqueId(), match.getKills().get(player.getKiller().getUniqueId()) + 1);
+        }
+
         List<MatchTeam> teams = match.getTeams();
         MatchTeam ourTeam = match.getTeam(player.getUniqueId());
 
         player.spigot().respawn();
 
         player.teleport(ourTeam == teams.get(0) ? match.getArena().getTeam1Spawn() : match.getArena().getTeam2Spawn());
+        match.getCurrentKit().getOrDefault(player.getUniqueId(), Kit.ofDefaultKit(match.getKitType())).apply(player);
     }
 
     @EventHandler
@@ -71,6 +84,7 @@ public class MatchBridgesListener implements Listener {
             return;
         if (match == null) return;
 
+        // is it done?
         Arena arena = match.getArena();
 
         if (!match.getKitType().getId().equalsIgnoreCase("Bridges")) return;
@@ -108,6 +122,8 @@ public class MatchBridgesListener implements Listener {
                             ourTeamBukkit.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has scored. " + ChatColor.LIGHT_PURPLE + (3 - ourTeam.getRoundsWon()) + ChatColor.YELLOW + " more to win.");
                         }
                     }
+
+                    match.getCurrentKit().getOrDefault(ourTeamUUIDS, Kit.ofDefaultKit(match.getKitType())).apply(ourTeamBukkit);
                 }
 
                 for (UUID otherTeamUUIDS : otherTeam.getAliveMembers()) {
@@ -121,6 +137,8 @@ public class MatchBridgesListener implements Listener {
                             otherTeamBukkit.sendMessage(ChatColor.RED + player.getName() + ChatColor.YELLOW + " has scored. " + ChatColor.LIGHT_PURPLE + (3 - ourTeam.getRoundsWon()) + ChatColor.YELLOW + " more to win.");
                         }
                     }
+
+                    match.getCurrentKit().getOrDefault(otherTeamUUIDS, Kit.ofDefaultKit(match.getKitType())).apply(otherTeamBukkit);
                 }
 
                 if (ourTeam.getRoundsWon() != 3) {
@@ -156,8 +174,67 @@ public class MatchBridgesListener implements Listener {
 
         if (!match.getKitType().getId().equalsIgnoreCase("Bridges")) return;
 
-        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             event.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            Match match = PotPvPSI.getInstance().getMatchHandler().getMatchPlaying(player);
+
+            if (match == null) return;
+
+            if (match.getKitType().getId().equalsIgnoreCase("Bridges")) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    private final Map<UUID, Long> bowCooldown = new ConcurrentHashMap<>();
+
+    @EventHandler
+    public void EntityShootBow(EntityShootBowEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            MatchHandler matchHandler = PotPvPSI.getInstance().getMatchHandler();
+            Match match = matchHandler.getMatchPlaying(player);
+
+            if (match == null) return;
+
+            if (!match.getKitType().getId().equalsIgnoreCase("Bridges")) return;
+
+            if (player.hasMetadata("Respawning")) {
+                event.setCancelled(true);
+                return;
+            }
+
+            bowCooldown.put(player.getUniqueId(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
+
+            new BukkitRunnable() {
+
+                public void run() {
+                    long cooldownExpires = bowCooldown.getOrDefault(player.getUniqueId(), 0L);
+
+                    if (cooldownExpires < System.currentTimeMillis()) {
+                        cancel();
+                        return;
+                    }
+
+                    int millisLeft = (int) (cooldownExpires - System.currentTimeMillis());
+                    float percentLeft = (float) millisLeft / 5;
+
+                    player.setExp(percentLeft);
+                    player.setLevel(millisLeft / 1_000);
+                }
+            }.runTaskTimer(PotPvPSI.getInstance(), 1L, 1L);
+
+            Bukkit.getScheduler().runTaskLater(PotPvPSI.getInstance(), () -> {
+                player.getInventory().addItem(new ItemStack(Material.ARROW));
+            }, 5 * 20L);
         }
     }
 }

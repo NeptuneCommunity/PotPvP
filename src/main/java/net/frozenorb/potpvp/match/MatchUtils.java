@@ -76,5 +76,4 @@ public final class MatchUtils {
 
         Bukkit.getScheduler().runTaskLater(PotPvPSI.getInstance(), player::updateInventory, 1L);
     }
-
 }

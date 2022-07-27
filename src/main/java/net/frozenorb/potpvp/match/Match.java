@@ -8,10 +8,11 @@ import lombok.Setter;
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.arena.Arena;
 import net.frozenorb.potpvp.elo.EloCalculator;
+import net.frozenorb.potpvp.kit.Kit;
 import net.frozenorb.potpvp.kittype.KitType;
 import net.frozenorb.potpvp.lobby.LobbyHandler;
 import net.frozenorb.potpvp.match.event.*;
-import net.frozenorb.potpvp.nametag.framework.NametagHandler;
+import net.frozenorb.potpvp.nametag.engine.NametagHandler;
 import net.frozenorb.potpvp.postmatchinv.PostMatchPlayer;
 import net.frozenorb.potpvp.setting.Setting;
 import net.frozenorb.potpvp.setting.SettingHandler;
@@ -89,6 +90,18 @@ public final class Match {
     private final Map<UUID, Integer> longestCombo = Maps.newHashMap();
     @Getter
     private final Map<UUID, Integer> missedPots = Maps.newHashMap();
+
+    @Getter
+    private final Map<UUID, Integer> kills = Maps.newHashMap();
+
+    @Getter
+    private final Map<UUID, Integer> goals = Maps.newHashMap();
+
+    @Getter
+    private final Map<UUID, Kit> currentKit = Maps.newHashMap();
+
+    @Getter
+    private final Map<UUID, Kit> hitMap = Maps.newHashMap();
 
     @Getter
     private final Set<UUID> allPlayers = Sets.newHashSet();

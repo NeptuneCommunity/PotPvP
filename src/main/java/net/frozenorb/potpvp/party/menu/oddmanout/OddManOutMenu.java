@@ -2,8 +2,8 @@ package net.frozenorb.potpvp.party.menu.oddmanout;
 
 import com.google.common.base.Preconditions;
 import net.frozenorb.potpvp.util.Callback;
-import net.frozenorb.potpvp.util.menu.framework.Button;
-import net.frozenorb.potpvp.util.menu.framework.Menu;
+import net.frozenorb.potpvp.util.menu.engine.Button;
+import net.frozenorb.potpvp.util.menu.engine.Menu;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

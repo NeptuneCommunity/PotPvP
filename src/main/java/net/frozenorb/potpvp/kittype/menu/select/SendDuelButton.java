@@ -3,7 +3,7 @@ package net.frozenorb.potpvp.kittype.menu.select;
 import com.google.common.collect.ImmutableList;
 import lombok.AllArgsConstructor;
 import net.frozenorb.potpvp.util.Callback;
-import net.frozenorb.potpvp.util.menu.framework.Button;
+import net.frozenorb.potpvp.util.menu.engine.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;

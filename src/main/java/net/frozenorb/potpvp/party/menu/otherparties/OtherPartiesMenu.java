@@ -6,8 +6,8 @@ import net.frozenorb.potpvp.party.Party;
 import net.frozenorb.potpvp.party.PartyHandler;
 import net.frozenorb.potpvp.setting.Setting;
 import net.frozenorb.potpvp.setting.SettingHandler;
-import net.frozenorb.potpvp.util.menu.framework.Button;
-import net.frozenorb.potpvp.util.menu.framework.Menu;
+import net.frozenorb.potpvp.util.menu.engine.Button;
+import net.frozenorb.potpvp.util.menu.engine.Menu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

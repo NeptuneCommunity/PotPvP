@@ -16,6 +16,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.material.MaterialData;
 
 public final class Kit {
 
@@ -62,30 +64,36 @@ public final class Kit {
         Match match = matchHandler.getMatchPlaying(player);
 
         if (type.getId().equalsIgnoreCase("Bridges")) {
-            if (match.getTeams().get(0) == match.getTeam(player.getUniqueId())) {
-                player.getInventory().setArmorContents(new ItemStack[]{
-                        new ItemBuilder(org.bukkit.Material.LEATHER_BOOTS).color(Color.BLUE).build(),
-                        new ItemBuilder(org.bukkit.Material.LEATHER_LEGGINGS).color(Color.BLUE).build(),
-                        new ItemBuilder(org.bukkit.Material.LEATHER_CHESTPLATE).color(Color.BLUE).build(),
-                        new ItemBuilder(Material.LEATHER_HELMET).color(Color.BLUE).build()
-                });
-                player.getInventory().all(Material.STAINED_CLAY).forEach((key, value) -> {
-                    player.getInventory().setItem(key, new ItemBuilder(Material.STAINED_CLAY).durability(11).amount(64).build());
-                    player.getInventory().setItem(key, new ItemBuilder(Material.STAINED_CLAY).durability(11).amount(64).build());
-                });
-            } else {
-                player.getInventory().setArmorContents(new ItemStack[]{
-                        new ItemBuilder(org.bukkit.Material.LEATHER_BOOTS).color(Color.RED).build(),
-                        new ItemBuilder(org.bukkit.Material.LEATHER_LEGGINGS).color(Color.RED).build(),
-                        new ItemBuilder(org.bukkit.Material.LEATHER_CHESTPLATE).color(Color.RED).build(),
-                        new ItemBuilder(Material.LEATHER_HELMET).color(Color.RED).build()
-                });
-                player.getInventory().all(Material.STAINED_CLAY).forEach((key, value) -> {
-                    player.getInventory().setItem(key, new ItemBuilder(Material.STAINED_CLAY).durability(14).amount(64).build());
-                    player.getInventory().setItem(key, new ItemBuilder(Material.STAINED_CLAY).durability(14).amount(64).build());
-                });
+            ItemStack[] armor;
+            for (ItemStack amorStack : armor = new ItemStack[]{
+                    new ItemStack(Material.LEATHER_BOOTS),
+                    new ItemStack(Material.LEATHER_LEGGINGS),
+                    new ItemStack(Material.LEATHER_CHESTPLATE),
+                    new ItemStack(Material.LEATHER_HELMET)}) {
+
+                LeatherArmorMeta meta = (LeatherArmorMeta) amorStack.getItemMeta();
+                meta.setColor(match.getTeams().get(0) == match.getTeam(player.getUniqueId()) ? Color.BLUE : Color.RED);
+                amorStack.setItemMeta(meta);
             }
 
+            player.getInventory().setArmorContents(armor);
+
+            for (ItemStack itemStack : player.getInventory().getContents()) {
+                if (itemStack != null) {
+                    if (itemStack.getType() == Material.STAINED_CLAY) {
+                        if (match.getTeams().get(0) == match.getTeam(player.getUniqueId())) {
+                            itemStack.setDurability((short) 11);
+                            return;
+                        }
+
+
+                        itemStack.setDurability((short) 14);
+                    }
+                }
+            }
+        }
+
+        if (type.getId().equalsIgnoreCase("Bridges") || type.getId().equalsIgnoreCase("Boxing")) {
             for (ItemStack itemStack : player.getInventory().getContents()) {
                 if (itemStack != null) {
                     ItemMeta itemMeta = itemStack.getItemMeta();
@@ -94,6 +102,8 @@ public final class Kit {
                     itemStack.setItemMeta(itemMeta);
                 }
             }
+
+            player.updateInventory();
         }
 
         Bukkit.getScheduler().runTaskLater(PotPvPSI.getInstance(), player::updateInventory, 1L);

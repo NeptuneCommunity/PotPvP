@@ -1,73 +1,21 @@
 package net.frozenorb.potpvp.util.uuid;
 
-import lombok.Getter;
-import net.frozenorb.potpvp.PotPvPSI;
-import net.frozenorb.potpvp.util.uuid.bukkit.BukkitUUIDCache;
-import net.frozenorb.potpvp.util.uuid.listener.UUIDListener;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-public final class UUIDCache implements IUUIDCache {
+public interface UUIDCache {
 
-    public static final UUID CONSOLE_UUID = UUID.fromString("f78a4d8d-d51b-4b39-98a3-230f2de0c670");
-    public static final String UPDATE_PREFIX = ChatColor.BLUE + "[UUIDCache]";
+    UUID uuid(String name);
 
-    public static final Map<UUID, Boolean> MONITOR_CACHE = new HashMap<>();
+    String name(UUID uuid);
 
-    @Getter
-    private IUUIDCache impl;
+    boolean cached(UUID uuid);
 
-    public UUIDCache() {
+    boolean cached(String name);
 
-        try {
-            this.impl = new BukkitUUIDCache();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    void ensure(UUID uuid);
 
-        PotPvPSI.getInstance().getServer().getPluginManager().registerEvents(new UUIDListener(), PotPvPSI.getInstance());
-        this.update(CONSOLE_UUID, "CONSOLE");
-    }
+    void update(UUID uuid,String name);
 
-    public UUID uuid(String name) {
-        return this.impl.uuid(name);
-    }
+    void updateAll(UUID uuid,String name);
 
-    public String name(UUID uuid) {
-        return this.impl.name(uuid);
-    }
-
-    public boolean cached(UUID uuid) {
-        return this.impl.cached(uuid);
-    }
-
-    public boolean cached(String name) {
-        return this.impl.cached(name);
-    }
-
-    public void ensure(UUID uuid) {
-        this.impl.ensure(uuid);
-    }
-
-    public void update(UUID uuid, String name) {
-        this.impl.update(uuid, name);
-    }
-
-    public void updateAll(UUID uuid, String name) {
-        this.impl.updateAll(uuid, name);
-    }
-
-    public void monitor(String message) {
-        MONITOR_CACHE.keySet().forEach(uuid -> {
-            final Player player = PotPvPSI.getInstance().getServer().getPlayer(uuid);
-
-            if (player != null && player.isOnline() && MONITOR_CACHE.get(uuid)) {
-                player.sendMessage(UPDATE_PREFIX + " " + ChatColor.GRAY + message);
-            }
-        });
-    }
 }

@@ -5,7 +5,7 @@ import net.frozenorb.potpvp.follow.listener.FollowGeneralListener;
 import net.frozenorb.potpvp.match.Match;
 import net.frozenorb.potpvp.match.MatchHandler;
 import net.frozenorb.potpvp.match.MatchState;
-import net.frozenorb.potpvp.nametag.framework.NametagHandler;
+import net.frozenorb.potpvp.nametag.engine.NametagHandler;
 import net.frozenorb.potpvp.util.InventoryUtils;
 import net.frozenorb.potpvp.util.VisibilityUtils;
 import org.bukkit.Bukkit;

@@ -6,7 +6,7 @@ import com.sk89q.worldedit.Vector;
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.arena.ArenaHandler;
 import net.frozenorb.potpvp.arena.ArenaSchematic;
-import net.frozenorb.potpvp.util.menu.framework.Button;
+import net.frozenorb.potpvp.util.menu.engine.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

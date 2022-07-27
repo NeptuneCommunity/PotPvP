@@ -5,8 +5,8 @@ import net.frozenorb.potpvp.arena.ArenaHandler;
 import net.frozenorb.potpvp.arena.ArenaSchematic;
 import net.frozenorb.potpvp.command.ManageCommand;
 import net.frozenorb.potpvp.util.menu.MenuBackButton;
-import net.frozenorb.potpvp.util.menu.framework.Button;
-import net.frozenorb.potpvp.util.menu.framework.Menu;
+import net.frozenorb.potpvp.util.menu.engine.Button;
+import net.frozenorb.potpvp.util.menu.engine.Menu;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

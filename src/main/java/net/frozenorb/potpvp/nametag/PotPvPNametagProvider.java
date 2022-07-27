@@ -5,8 +5,8 @@ import net.frozenorb.potpvp.follow.FollowHandler;
 import net.frozenorb.potpvp.match.Match;
 import net.frozenorb.potpvp.match.MatchHandler;
 import net.frozenorb.potpvp.match.MatchTeam;
-import net.frozenorb.potpvp.nametag.framework.NametagInfo;
-import net.frozenorb.potpvp.nametag.framework.NametagProvider;
+import net.frozenorb.potpvp.nametag.engine.NametagInfo;
+import net.frozenorb.potpvp.nametag.engine.NametagProvider;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

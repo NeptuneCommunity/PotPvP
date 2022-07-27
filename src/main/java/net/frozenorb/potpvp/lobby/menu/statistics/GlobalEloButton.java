@@ -3,7 +3,7 @@ package net.frozenorb.potpvp.lobby.menu.statistics;
 import com.google.common.collect.Lists;
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.elo.EloHandler;
-import net.frozenorb.potpvp.util.menu.framework.Button;
+import net.frozenorb.potpvp.util.menu.engine.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

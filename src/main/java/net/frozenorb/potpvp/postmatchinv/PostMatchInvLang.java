@@ -94,6 +94,4 @@ public final class PostMatchInvLang {
         components.remove(components.size() - 1); // remove trailing comma
         return components.toArray(new TextComponent[components.size()]);
     }
-
-
 }

@@ -15,7 +15,6 @@ public class PlayerInfoPacketMod {
         this.packet = new PacketPlayOutPlayerInfo();
 
         if (is18) {
-
             this.setField("username", name);
             this.setField("ping", ping);
             this.setField("action", action);

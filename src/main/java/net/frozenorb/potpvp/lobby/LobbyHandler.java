@@ -7,7 +7,7 @@ import net.frozenorb.potpvp.lobby.listener.LobbyGeneralListener;
 import net.frozenorb.potpvp.lobby.listener.LobbyItemListener;
 import net.frozenorb.potpvp.lobby.listener.LobbyParkourListener;
 import net.frozenorb.potpvp.lobby.listener.LobbySpecModeListener;
-import net.frozenorb.potpvp.nametag.framework.NametagHandler;
+import net.frozenorb.potpvp.nametag.engine.NametagHandler;
 import net.frozenorb.potpvp.util.InventoryUtils;
 import net.frozenorb.potpvp.util.PatchedPlayerUtils;
 import net.frozenorb.potpvp.util.VisibilityUtils;

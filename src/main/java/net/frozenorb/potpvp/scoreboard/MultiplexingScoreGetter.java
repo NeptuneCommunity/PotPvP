@@ -2,7 +2,7 @@ package net.frozenorb.potpvp.scoreboard;
 
 import net.frozenorb.potpvp.PotPvPSI;
 import net.frozenorb.potpvp.match.MatchHandler;
-import net.frozenorb.potpvp.scoreboard.assemble.construct.ScoreGetter;
+import net.frozenorb.potpvp.scoreboard.engine.construct.ScoreGetter;
 import net.frozenorb.potpvp.setting.Setting;
 import net.frozenorb.potpvp.setting.SettingHandler;
 import org.bukkit.ChatColor;

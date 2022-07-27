@@ -6,8 +6,8 @@ import net.frozenorb.potpvp.kittype.HealingMethod;
 import net.frozenorb.potpvp.postmatchinv.PostMatchInvHandler;
 import net.frozenorb.potpvp.postmatchinv.PostMatchPlayer;
 import net.frozenorb.potpvp.util.InventoryUtils;
-import net.frozenorb.potpvp.util.menu.framework.Button;
-import net.frozenorb.potpvp.util.menu.framework.Menu;
+import net.frozenorb.potpvp.util.menu.engine.Button;
+import net.frozenorb.potpvp.util.menu.engine.Menu;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

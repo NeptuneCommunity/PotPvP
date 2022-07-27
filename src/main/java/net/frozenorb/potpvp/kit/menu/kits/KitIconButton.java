@@ -7,7 +7,7 @@ import net.frozenorb.potpvp.kit.Kit;
 import net.frozenorb.potpvp.kit.KitHandler;
 import net.frozenorb.potpvp.kit.menu.editkit.EditKitMenu;
 import net.frozenorb.potpvp.kittype.KitType;
-import net.frozenorb.potpvp.util.menu.framework.Button;
+import net.frozenorb.potpvp.util.menu.engine.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

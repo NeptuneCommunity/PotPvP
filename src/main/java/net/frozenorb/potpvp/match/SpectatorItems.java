@@ -32,5 +32,4 @@ public final class SpectatorItems {
         ItemUtil.setDisplayName(RETURN_TO_LOBBY_ITEM, ChatColor.YELLOW + "Return to lobby");
         ItemUtil.setDisplayName(LEAVE_PARTY_ITEM, ChatColor.YELLOW + "Leave party");
     }
-
 }

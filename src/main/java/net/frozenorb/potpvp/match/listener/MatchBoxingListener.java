@@ -20,9 +20,6 @@ public class MatchBoxingListener implements Listener {
     @Getter
     private final HashMap<UUID, Integer> victimHitMap = new HashMap<>();
 
-    @Getter
-    static HashMap<MatchTeam, Integer> hitMapTeam = new HashMap<>();
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         MatchHandler matchHandler = PotPvPSI.getInstance().getMatchHandler();
@@ -59,7 +56,9 @@ public class MatchBoxingListener implements Listener {
 
                     MatchTeam attackerTeam = match.getTeam(attacker.getUniqueId());
 
-                    hitMapTeam.put(attackerTeam, hitMapTeam.getOrDefault(attackerTeam, 0) + 1);
+                    if (attackerTeam == null) return;
+
+                    attackerTeam.getHitMap().put(attackerTeam, attackerTeam.getHitMap().getOrDefault(attackerTeam, 0) + 1);
                     victimHitMap.put(victim.getUniqueId(), victimHitMap.getOrDefault(victim.getUniqueId(), 0) + 1);
                 }
             }
